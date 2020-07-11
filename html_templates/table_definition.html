@@ -1,0 +1,51 @@
+<a id="${table_id}"></a>
+<a href="#top">Back to top</a>
+<table>
+
+    <thead>
+
+        <tr>
+
+            <th colspan="5">${table_name}</th>
+
+        </tr>
+
+        <tr>
+
+            <th>Field</th>
+            <th>Type</th>
+            <th>Length</th>
+            <th>Description</th>
+            <th>Flags</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+        ${table_definition_rows}
+    </tbody>
+
+    <tbody>
+
+        <tr>
+
+            <th colspan="5">Relationships</th>
+
+        </tr>
+
+        <tr>
+
+            <th>Type</th>
+            <th colspan="2">Target Table</th>
+            <th colspan="2">Field name</th>
+
+        </tr>
+
+
+        ${table_relationships_rows}
+
+    </tbody>
+
+
+</table>

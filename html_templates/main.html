@@ -1,0 +1,110 @@
+<!-- Developed by Specify Software (https://www.sustain.specifysoftware.org/) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Specify Schema</title>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta
+            name="author"
+            content="Specify Software">
+    <meta
+            name="theme-color"
+            content="#145a8d"/>
+    <meta
+            name="robots"
+            content="noindex,nofollow">
+    <meta
+            name="apple-mobile-web-app-title"
+            content="Specify Schema">
+    <meta
+            name="application-name"
+            content="Specify Schema">
+    <meta
+            name="description"
+            content="Specify Schema">
+    <link
+            rel="icon"
+            type="image/png"
+            sizes="150x150"
+            href="https://www.sustain.specifysoftware.org/wp-content/uploads/2017/06/sp_project_square-1-150x150.png">
+    <style>
+
+        body {
+            margin: 20px;
+            font-family: Arial, sans-serif;
+            background: #fff;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        a:hover {
+            font-weight: bold;
+        }
+
+        table {
+            margin-bottom: 60px;
+            border: 5px solid #000;
+            padding: 10px;
+        }
+
+        thead tr:first-child th {
+            background: #777;
+            color: #fff;
+            padding: 10px;
+        }
+
+        th[colspan="5"] {
+            border-bottom: 20px solid #fff;
+        }
+
+        thead tr, tbody:last-child tr:first-child {
+            padding: 10px 0;
+            background: #aaa;
+        }
+
+        th, td {
+            padding: 10px;
+        }
+
+    </style>
+</head>
+<body class="mb-4">
+
+
+<a id="top"></a>
+<h1>Specify Schema</h1>
+<h2>Date generated: ${date_generated}</h2>
+
+
+<h3>List of tables</h3>
+
+<ul>
+    ${list_of_tables}
+</ul>
+
+
+<h3>Table Definitions</h3>
+
+${table_definitions}
+
+<script>
+
+    const tables_list = {${js_list_of_tables}};
+    const cells = document.querySelectorAll('[data-classname]');
+
+    cells.forEach(function (cell) {
+
+        const classname = cell.getAttribute('data-classname');
+        cell.innerText = tables_list[classname];
+
+    });
+
+</script>
+
+</body>
+</html>
