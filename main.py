@@ -4,7 +4,7 @@ from pathlib import Path
 import datetime
 import re
 
-data_model_xml_location = '/Applications/Specify/config/specify_datamodel.xml'
+data_model_xml_location = '/Users/maxxxxxdlp/Downloads/specify_datamodel.xml'
 output_file = 'schema.html'
 
 path = str(Path(__file__).parent) + '/'

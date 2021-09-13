@@ -7,7 +7,6 @@ You need to have Python 3.8+ and the following packages:
 - string
 - pathlib
 - datetime
-- re
 
 # How to run
 Before you can run the script, you should specify the location of your `specify_datamodel.xml` file
