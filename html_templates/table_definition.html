@@ -2,48 +2,41 @@
 <a href="#top">Back to top</a>
 <div>
   <table>
+    <thead>
+      <tr>
+        <th colspan="5" scope="col">${table_name}</th>
+      </tr>
 
-      <thead>
+      <tr class="table_description">
+        <th colspan="5" scope="col">${table_description}</th>
+      </tr>
 
-          <tr>
-            <th colspan="5" scope="col">${table_name}</th>
-          </tr>
+      <tr>
+        <th scope="col">Field</th>
+        <th scope="col">Type</th>
+        <th scope="col">Length</th>
+        <th scope="col">Description</th>
+        <th scope="col">Flags</th>
+      </tr>
+    </thead>
 
-          <tr class="table_description">
-              <th colspan="5" scope="col">${table_description}</th>
-          </tr>
+    <tbody>
+      ${table_definition_rows}
+    </tbody>
 
-          <tr>
-              <th scope="col">Field</th>
-              <th scope="col">Type</th>
-              <th scope="col">Length</th>
-              <th scope="col">Description</th>
-              <th scope="col">Flags</th>
-          </tr>
+    <tbody>
+      <tr>
+        <th colspan="5" scope="col">Relationships</th>
+      </tr>
 
-      </thead>
+      <tr>
+        <th scope="col">Type</th>
+        <th colspan="1" scope="col">Target Table</th>
+        <th colspan="1" scope="col">Field name</th>
+        <th colspan="2" scope="col">Description</th>
+      </tr>
 
-      <tbody>
-          ${table_definition_rows}
-      </tbody>
-
-      <tbody>
-
-          <tr>
-              <th colspan="5" scope="col">Relationships</th>
-          </tr>
-
-          <tr>
-              <th scope="col">Type</th>
-              <th colspan="1" scope="col">Target Table</th>
-              <th colspan="1" scope="col">Field name</th>
-              <th colspan="2" scope="col">Description</th>
-          </tr>
-
-          ${table_relationships_rows}
-
-      </tbody>
-
-
+      ${table_relationships_rows}
+    </tbody>
   </table>
 </div>

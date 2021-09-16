@@ -1,37 +1,26 @@
 <!-- Developed by Specify Software (https://www.sustain.specifysoftware.org/) -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>Specify Schema</title>
     <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta
-            name="author"
-            content="Specify Software">
-    <meta
-            name="theme-color"
-            content="#145a8d"/>
-    <meta
-            name="robots"
-            content="noindex,nofollow">
-    <meta
-            name="apple-mobile-web-app-title"
-            content="Specify Schema">
-    <meta
-            name="application-name"
-            content="Specify Schema">
-    <meta
-            name="description"
-            content="Specify Schema">
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="author" content="Specify Software" />
+    <meta name="theme-color" content="#158" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="apple-mobile-web-app-title" content="Specify Schema" />
+    <meta name="application-name" content="Specify Schema" />
+    <meta name="description" content="Specify Schema" />
     <link
-            rel="icon"
-            type="image/png"
-            sizes="150x150"
-            href="https://www.sustain.specifysoftware.org/wp-content/uploads/2017/06/sp_project_square-1-150x150.png">
+      rel="icon"
+      type="image/png"
+      sizes="150x150"
+      href="https://www.sustain.specifysoftware.org/wp-content/uploads/2017/06/sp_project_square-1-150x150.png"
+    />
     <style>
-
       :root {
         --heading_text_color: #fff;
         --heading_1: #357;
@@ -107,73 +96,74 @@
       }
     </style>
     <style id="language-styles"></style>
-</head>
-<body class="mb-4 loading">
+  </head>
+  <body class="mb-4 loading">
+    <a id="top"></a>
+    <h1>Schema version: 2.9</h1>
+    <h2>Date generated: ${date_generated}</h2>
 
+    <p>
+      This schema is for Specify 6.8.01 and Specify 7.6.0.<br />
+      <a href="https://files.specifysoftware.org/schema/old_versions/2.7.html"
+        >Older versions</a
+      >
+    </p>
 
-<a id="top"></a>
-<h1>Schema version: 2.9</h1>
-<h2>Date generated: ${date_generated}</h2>
+    <p>
+      <label>
+        Choose language:
+        <select id="language"></select>
+      </label>
+    </p>
 
-<p>
-  This schema is for Specify 6.8.01 and Specify 7.6.0.<br>
-  <a
-    href="https://files.specifysoftware.org/schema/old_versions/2.7.html"
-    >Older versions</a>
-</p>
+    <h3>List of tables</h3>
 
-<p>
-  <label>
-    Choose language:
-    <select id="language"></select>
-  </label>
-</p>
+    <ul>
+      ${list_of_tables}
+    </ul>
 
-<h3>List of tables</h3>
+    <h3>Table Definitions</h3>
 
-<ul>
-    ${list_of_tables}
-</ul>
+    ${table_definitions}
 
+    <script>
+      const languages = ${languages};
+      const tables = ${table_names};
 
-<h3>Table Definitions</h3>
-
-${table_definitions}
-
-<script>
-
-    const languages = ${languages};
-    const tables = ${table_names};
-
-    Array.from(document.getElementsByClassName('target-table'),(cell)=>{
+      Array.from(document.getElementsByClassName('target-table'), (cell) => {
         const classname = cell.getAttribute('data-classname');
-        const link = typeof tables[classname] === 'undefined'
-          ? ''
-          : `href="#$${tables[classname].id}"`;
+        const link =
+          typeof tables[classname] === 'undefined'
+            ? ''
+            : `href="#$${tables[classname].id}"`;
         cell.innerHTML = `<a $${link}>
             $${tables[classname]?.name ?? classname}
         </a>`;
-    });
+      });
 
-    const languageSelector = document.getElementById('language');
-    languageSelector.innerHTML = Object.entries(languages).map(([value, label])=>`<option value="$${value}">$${label}</option>`);
-    let currentLanguage = Object.keys(languages)[0];
-    document.body.classList.add(`selected-language-$${currentLanguage}`);
-    languageSelector.addEventListener('change', ()=>{
-      document.body.classList.remove(`selected-language-$${currentLanguage}`);
-      currentLanguage = languageSelector.value;
+      const languageSelector = document.getElementById('language');
+      languageSelector.innerHTML = Object.entries(languages).map(
+        ([value, label]) => `<option value="$${value}">$${label}</option>`
+      );
+      let currentLanguage = Object.keys(languages)[0];
       document.body.classList.add(`selected-language-$${currentLanguage}`);
-    });
-    document.getElementById('language-styles').innerHTML = `
-      $${Object.keys(languages).map(key=>`
+      languageSelector.addEventListener('change', () => {
+        document.body.classList.remove(`selected-language-$${currentLanguage}`);
+        currentLanguage = languageSelector.value;
+        document.body.classList.add(`selected-language-$${currentLanguage}`);
+      });
+      document.getElementById('language-styles').innerHTML = `
+      $${Object.keys(languages)
+        .map(
+          (key) => `
         body.selected-language-$${key} .language:not(.language-$${key})
-      `).join(',\n')} {
+      `
+        )
+        .join(',\n')} {
         display: none;
       }`;
 
-    document.body.classList.remove('loading');
-
-</script>
-
-</body>
+      document.body.classList.remove('loading');
+    </script>
+  </body>
 </html>
