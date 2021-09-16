@@ -1,46 +1,120 @@
 import xml.etree.ElementTree
+from xml.dom import minidom
 from string import Template
 from pathlib import Path
 import datetime
-import re
+import os
 
 data_model_xml_location = '/Users/maxxxxxdlp/Downloads/specify_datamodel.xml'
+schema_localization_xml_location = '/Users/maxxxxxdlp/site/git/specify6/config/schema_localization.xml'
 output_file = 'schema.html'
 
-path = str(Path(__file__).parent) + '/'
-templates = ['list_item', 'main', 'table_definition', 'table_definition_row', 'table_relationships_rows']
-file_path = Template(path + 'html_templates/${name}.html')
-html_templates = {}
+current_directory = str(Path(__file__).parent) + '/'
+templates = ['list_item', 'main', 'table_definition', 'table_definition_row',
+             'table_relationships_rows']
+file_path = Template(current_directory + 'html_templates/${name}.html')
+html_templates = { }
 
 for template in templates:
     with open(file_path.substitute(name=template)) as file:
-        html_templates[template] = Template(file.read().replace('\n', ''))
+        html_templates[template] = Template(file.read())
 
 tree = xml.etree.ElementTree.parse(data_model_xml_location)
 database = tree.getroot()
 
+tree = minidom.parse(schema_localization_xml_location)
+localization = tree.getElementsByTagName('container')
+
 result = ''
 list_of_tables = ''
 table_definitions = ''
-table_names = {}
+table_names = { }
+languages = {
+    'en': 'English',
+    'pt': 'Portuguese',
+    'pt_BR': 'Portuguese (Brazilian)',
+    'ru_RU': 'Russian',
+    'uk_UA': 'Ukrainian',
+}
 
-format_table_name = re.compile(r'(?<!^)(?=[A-Z])')
+def extract_strings(container):
+    strings = {}
+    for string in container.getElementsByTagName('str'):
+        language = string.getAttribute('language')
+        country = f'_{string.getAttribute("country")}' \
+            if string.hasAttribute('country') and string.getAttribute("country") \
+            else ''
+        strings[f'{language}{country}'] = get_node_text(string.getElementsByTagName('text')[0])
+
+    # If localization is missing, use English variant
+    if 'en' in strings:
+        for key in languages.keys():
+            if key not in strings:
+                strings[key] = strings['en']
+
+    return format_strings(strings)
+
+def format_strings(strings):
+    return '\n'.join([
+        f'<span class="language language-{key}">{strings[key]}</span>'
+        for key in languages.keys()
+        if key in strings
+    ])
+
+def get_node_text(node):
+    for node in node.childNodes:
+        if node.nodeType == node.TEXT_NODE:
+            return node.data
+
+def get_child(node, tag_name):
+    return [
+        child
+        for child in node.childNodes
+        if child.nodeType != child.TEXT_NODE and child.tagName == tag_name
+    ][0]
+
+def find_node(nodes, attribute, value):
+    return [
+        node
+        for node in nodes
+        if node.getAttribute(attribute) == value
+    ][0]
 
 for table in database:
 
     table_id = table.attrib['table']
     classname = table.attrib['classname']
-    table_name = table_id
+
+    localization_table = find_node(localization, 'name', table_id)
+
+    table_name = extract_strings(get_child(localization_table, 'names'))
+    table_description = extract_strings(get_child(localization_table, 'descs'))
+    field_localizations = \
+        localization_table.getElementsByTagName('items')[0].getElementsByTagName('desc')
 
     fields = ''
     relationships = ''
 
     for field in table:
 
-        if field.tag == "id":
-            table_name = field.attrib['column'][0:-2]
+        if field.tag not in ['field', 'relationship']:
+            continue
 
-        elif field.tag == "field":
+        try:
+            field_localization = find_node(
+                field_localizations,
+                'name',
+                field.attrib[
+                    'name'
+                    if field.tag == 'field'
+                    else 'relationshipname'
+                ]
+            ).getElementsByTagName('descs')[0]
+            description = extract_strings(field_localization)
+        except IndexError:
+            description = ''
+
+        if field.tag == "field":
 
             flags = []
 
@@ -55,55 +129,54 @@ for table in database:
 
             flags = ' '.join(flags)
 
-            if 'description' in field.attrib:
-                description = field.attrib['description']
-            else:
-                description = ''
-
-
             if 'length' in field.attrib:
                 length = field.attrib['length']
             else:
                 length = ''
 
-            fields += html_templates['table_definition_row'].substitute(name=field.attrib['column'],
-                                                                        type=field.attrib['type'],
-                                                                        length=length,
-                                                                        description=description,
-                                                                        flags=flags)
+            fields += html_templates['table_definition_row'].substitute(
+                name=field.attrib['column'],
+                type=field.attrib['type'],
+                length=length,
+                description=description,
+                flags=flags
+            )
 
         elif field.tag == "relationship":
-            relationships += html_templates['table_relationships_rows'].substitute(type=field.attrib['type'],
-                                                                                   name=field.attrib['classname'],
-                                                                                   target_table=field.attrib[
-                                                                                       'relationshipname'])
+            relationships += \
+                html_templates['table_relationships_rows'].substitute(
+                    type=field.attrib['type'],
+                    name=field.attrib['classname'],
+                    target_table=field.attrib['relationshipname'],
+                    description=description
+                )
 
-    table_name = format_table_name.sub(' ', table_name).replace('D N A', 'DNA').replace('Dna', 'DNA')
+    table_names[classname] = {
+        'id': table_id,
+        'name': table_name
+    }
 
-    table_names[classname] = table_name
+    list_of_tables += html_templates['list_item'].substitute(
+        table_id=table_id,
+        table_name=table_name
+    )
 
-    list_of_tables += html_templates['list_item'].substitute(table_id=table_id,
-                                                             table_name=table_name)
-
-    table_definitions += html_templates['table_definition'].substitute(table_id=table_id,
-                                                                       table_name=table_name,
-                                                                       table_definition_rows=fields,
-                                                                       table_relationships_rows=relationships)
-
-js_list_of_tables = ''
-
-while True:
-    try:
-        [classname, table_name] = table_names.popitem()
-        js_list_of_tables += "'{}':'{}',".format(classname, table_name)
-    except KeyError:
-        break
+    table_definitions += html_templates['table_definition'].substitute(
+        table_id=table_id,
+        table_name=table_name,
+        table_description=table_description,
+        table_definition_rows=fields,
+        table_relationships_rows=relationships
+    )
 
 date_generated = datetime.date.today()
-result = html_templates['main'].substitute(date_generated=date_generated,
-                                           list_of_tables=list_of_tables,
-                                           table_definitions=table_definitions,
-                                           js_list_of_tables=js_list_of_tables)
+result = html_templates['main'].substitute(
+    date_generated=date_generated,
+    list_of_tables=list_of_tables,
+    table_definitions=table_definitions,
+    table_names=table_names,
+    languages=languages
+)
 
-with open(path + output_file, "w") as result_file:
+with open(os.path.join(current_directory, output_file), "w") as result_file:
     result_file.write(result)
