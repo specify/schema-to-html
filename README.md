@@ -11,23 +11,9 @@ You need to have Python 3.8+ and the following packages:
 - pathlib
 - datetime
 
-## Configuration
+## Generating HTML file
 
-Set `data_model_xml_location` variable in `main.py` to the location of
-`specify_datamodel.xml` file.
-
-Default location varies depending on the system:
-
-- Mac OS: `/Applications/Specify/config/specify_datamodel.xml`
-- Linux: `~/Specify/config/specify_datamodel.xml`
-- Windows: `C:\Program Files\Specify\config\`
-
-Similarly, set `schema_localization_xml_location` to the location of
-"schema_localization.xml" file (you can get it from
-[here](https://github.com/specify/specify6/blob/master/config/schema_localization.xml)
-)
-
-Then run the script
+Adjust the variables in `config.py` as needed, then run the script:
 
 ```zsh
 python main.py
