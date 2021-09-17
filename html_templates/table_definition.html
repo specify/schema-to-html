@@ -1,42 +1,44 @@
-<a id="${table_id}"></a>
-<a href="#top">Back to top</a>
-<div>
-  <table>
-    <thead>
-      <tr>
-        <th colspan="5" scope="col">${table_name}</th>
-      </tr>
+<section>
+  <a id="${table_id}"></a>
+  <a href="#top">Back to top</a>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th colspan="5" scope="col">${table_name}</th>
+        </tr>
 
-      <tr class="table_description">
-        <th colspan="5" scope="col">${table_description}</th>
-      </tr>
+        <tr class="table_description">
+          <th colspan="5" scope="col">${table_description}</th>
+        </tr>
 
-      <tr>
-        <th scope="col">Field</th>
-        <th scope="col">Type</th>
-        <th scope="col">Length</th>
-        <th scope="col">Description</th>
-        <th scope="col">Flags</th>
-      </tr>
-    </thead>
+        <tr>
+          <th scope="col">Field</th>
+          <th scope="col">Type</th>
+          <th scope="col">Length</th>
+          <th scope="col">Description</th>
+          <th scope="col">Flags</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      ${table_definition_rows}
-    </tbody>
+      <tbody>
+        ${table_definition_rows}
+      </tbody>
 
-    <tbody>
-      <tr>
-        <th colspan="5" scope="col">Relationships</th>
-      </tr>
+      <tbody>
+        <tr>
+          <th colspan="5" scope="col">Relationships</th>
+        </tr>
 
-      <tr>
-        <th scope="col">Type</th>
-        <th colspan="1" scope="col">Target Table</th>
-        <th colspan="1" scope="col">Field name</th>
-        <th colspan="2" scope="col">Description</th>
-      </tr>
+        <tr>
+          <th scope="col">Type</th>
+          <th colspan="1" scope="col">Target Table</th>
+          <th colspan="1" scope="col">Field name</th>
+          <th colspan="2" scope="col">Description</th>
+        </tr>
 
-      ${table_relationships_rows}
-    </tbody>
-  </table>
-</div>
+        ${table_relationships_rows}
+      </tbody>
+    </table>
+  </div>
+</section>

@@ -22,18 +22,22 @@
     />
     <style>
       :root {
-        --heading_text_color: #fff;
-        --heading_1: #357;
-        --heading_2: #69c;
-        --cell_odd: #adf;
-        --cell_even: #fff;
-        --border_color: #28b;
+        --t1: #fff;
+        --b0: #fff;
+        --b1: #357;
+        --b2: #69c;
+        --b3: #adf;
+        --border-color: #28b;
       }
 
       body {
         margin: 0;
         font-family: Arial, sans-serif;
-        background: #fff;
+        background: var(--b0);
+      }
+
+      body:not(.iframe) {
+        margin: 1rem;
       }
 
       a {
@@ -44,7 +48,7 @@
         font-weight: bold;
       }
 
-      div {
+      .table-container {
         overflow: auto;
       }
 
@@ -56,16 +60,16 @@
       }
 
       thead tr:first-child th {
-        background: var(--heading_1);
-        color: var(--heading_text_color);
+        background: var(--b1);
+        color: var(--t1);
         padding: 10px;
       }
 
       thead tr,
       tbody:last-child tr:first-child {
         padding: 10px 0;
-        background: var(--heading_2) !important;
-        color: var(--heading_text_color);
+        background: var(--b2) !important;
+        color: var(--t1);
       }
 
       th {
@@ -80,15 +84,15 @@
       table,
       th,
       td {
-        border: 1px solid var(--border_color);
+        border: 1px solid var(--border-color);
       }
 
       tr:nth-child(odd) {
-        background: var(--cell_odd);
+        background: var(--b3);
       }
 
       tr:nth-child(even) {
-        background: var(--cell_even);
+        background: var(--b0);
       }
 
       body.loading .language:not(:first-child) {
@@ -127,6 +131,13 @@
     ${table_definitions}
 
     <script>
+
+      // Check if the page is in an iframe
+      try {
+        if(window.self !== window.top)
+          document.body.classList.add('iframe');
+      } catch (e) {}
+
       const languages = ${languages};
       const tables = ${table_names};
 
