@@ -2,6 +2,8 @@
 
 Converts Specify's schema to an HTML page
 
+[See result](https://www.specifysoftware.org/specify-6-schema/)
+
 ## Requirements
 
 You need to have Python 3.8+ and the following packages:
