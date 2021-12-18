@@ -2,6 +2,7 @@
 """Helpers for extracting data from XML."""
 
 from config import languages
+from arguments import arguments
 
 
 def extract_strings(container):
@@ -13,13 +14,13 @@ def extract_strings(container):
     Returns:
         dict of strings
     """
-    strings = {}
+    strings = { }
     for string in container.getElementsByTagName("str"):
         language = string.getAttribute("language")
         country = (
             f'_{string.getAttribute("country")}'
             if string.hasAttribute("country")
-            and string.getAttribute("country")
+               and string.getAttribute("country")
             else ""
         )
         strings[f"{language}{country}"] = get_node_text(
@@ -44,13 +45,22 @@ def format_strings(strings):
     Returns:
         HTML string
     """
-    return "\n".join(
-        [
-            f'<span class="language language-{key}">{strings[key]}</span>'
-            for key in languages.keys()
-            if key in strings
-        ]
-    )
+    if arguments['format'] == 'html':
+        return "\n".join(
+            [
+                f'<span class="language language-{key}">{strings[key]}</span>'
+                for key in languages.keys()
+                if key in strings
+            ]
+        )
+    else:
+        return (
+            strings[arguments['language']]
+            if arguments['language'] in strings
+            else strings['en']
+            if 'en' in arguments
+            else ''
+        )
 
 
 def get_node_text(node):
@@ -84,7 +94,7 @@ def get_child(node, tag_name):
         child
         for child in node.childNodes
         if child.nodeType != child.TEXT_NODE
-        and child.tagName == tag_name
+           and child.tagName == tag_name
     ][0]
 
 

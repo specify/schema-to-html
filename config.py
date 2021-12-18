@@ -20,9 +20,6 @@ schema_localization_xml_location = (
     "/Users/maxxxxxdlp/site/git/specify6/config/schema_localization.xml"
 )
 
-# Output file location
-output_location = "./schema.html"
-
 # Which languages to output
 languages = {
     "en": "English",

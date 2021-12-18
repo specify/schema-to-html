@@ -6,9 +6,11 @@ from xml.dom import minidom
 import datetime
 
 from config import data_model_xml_location, schema_localization_xml_location, \
-    output_location, languages
-from templates import html_templates
+    languages
+from html_templates import html_templates
+from tsv_templates import tsv_templates
 from utils import extract_strings, get_child, find_node
+from arguments import arguments
 
 
 tree = xml.etree.ElementTree.parse(data_model_xml_location)
@@ -21,6 +23,8 @@ result = ""
 list_of_tables = ""
 table_definitions = ""
 table_names = {}
+
+templates = html_templates if arguments['format'] == 'html' else tsv_templates
 
 
 for table in database:
@@ -80,7 +84,7 @@ for table in database:
             else:
                 length = ""
 
-            fields += html_templates["table_definition_row"].substitute(
+            fields += templates["table_definition_row"].substitute(
                 name=field.attrib["column"],
                 type=field.attrib["type"],
                 length=length,
@@ -89,7 +93,7 @@ for table in database:
             )
 
         elif field.tag == "relationship":
-            relationships += html_templates[
+            relationships += templates[
                 "table_relationships_rows"
             ].substitute(
                 type=field.attrib["type"],
@@ -100,11 +104,11 @@ for table in database:
 
     table_names[classname] = {"id": table_id, "name": table_name}
 
-    list_of_tables += html_templates["list_item"].substitute(
+    list_of_tables += templates["list_item"].substitute(
         table_id=table_id, table_name=table_name
     )
 
-    table_definitions += html_templates["table_definition"].substitute(
+    table_definitions += templates["table_definition"].substitute(
         table_id=table_id,
         table_name=table_name,
         table_description=table_description,
@@ -113,7 +117,7 @@ for table in database:
     )
 
 date_generated = datetime.date.today()
-result = html_templates["main"].substitute(
+result = templates["main"].substitute(
     date_generated=date_generated,
     list_of_tables=list_of_tables,
     table_definitions=table_definitions,
@@ -121,5 +125,5 @@ result = html_templates["main"].substitute(
     languages=languages,
 )
 
-with open(output_location, "w") as result_file:
+with open(arguments['output'], "w") as result_file:
     result_file.write(result)
