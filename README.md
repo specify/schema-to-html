@@ -13,6 +13,10 @@ You need to have Python 3.8+ and the following packages:
 - pathlib
 - datetime
 
+## Configuration
+
+Configuration options are described in [`./config.py`](https://github.com/specify/schema_to_html/blob/main/config.py)
+
 ## Generating output
 
 Adjust the variables in `config.py` as needed, then run the script:
