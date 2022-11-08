@@ -6,12 +6,7 @@ Converts Specify's schema to an HTML or TSV page
 
 ## Requirements
 
-You need to have Python 3.8+ and the following packages:
-
-- xml.etree.ElementTree
-- string
-- pathlib
-- datetime
+You need to have Python 3.8+, a checked out repository of [Specify 6](http://github.com/specify/specify6/) and an installed copy of Specify 6
 
 ## Configuration
 
