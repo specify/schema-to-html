@@ -12,6 +12,8 @@ You need to have Python 3.8+, a checked out repository of [Specify 6](http://git
 
 Configuration options are described in [`./config.py`](https://github.com/specify/schema_to_html/blob/main/config.py)
 
+Additionally, you might want to change the schema version number by editing [`./html_templates/main.html`](https://github.com/specify/schema_to_html/blob/d3d580e34fc742a3089ff912e395263f4e0d63cd/html_templates/main.html#L106-L114)
+
 ## Generating output
 
 Adjust the variables in `config.py` as needed, then run the script:
