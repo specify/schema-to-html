@@ -6,12 +6,13 @@ Converts Specify's schema to an HTML or TSV page
 
 ## Requirements
 
-You need to have Python 3.8+ and the following packages:
+You need to have Python 3.8+, a checked out repository of [Specify 6](http://github.com/specify/specify6/) and an installed copy of Specify 6
 
-- xml.etree.ElementTree
-- string
-- pathlib
-- datetime
+## Configuration
+
+Configuration options are described in [`./config.py`](https://github.com/specify/schema_to_html/blob/main/config.py)
+
+Additionally, you might want to change the schema version number by editing [`./html_templates/main.html`](https://github.com/specify/schema_to_html/blob/d3d580e34fc742a3089ff912e395263f4e0d63cd/html_templates/main.html#L106-L114)
 
 ## Generating output
 
