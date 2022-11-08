@@ -10,14 +10,14 @@ Default location varies depending on the system:
 - Windows: C:\Program Files\Specify\config\
 """
 data_model_xml_location = (
-    "/Users/maxxxxxdlp/Downloads/specify_datamodel.xml"
+    "/Users/maxpatiiuk/Downloads/specify_datamodel.xml"
 )
 
 # Location of the schema_localization.xml file
 # You can get it from here:
 # https://github.com/specify/specify6/blob/master/config/schema_localization.xml
 schema_localization_xml_location = (
-    "/Users/maxxxxxdlp/site/git/specify6/config/schema_localization.xml"
+    "/Users/maxpatiiuk/site/git/specify6/config/schema_localization.xml"
 )
 
 # Which languages to output
